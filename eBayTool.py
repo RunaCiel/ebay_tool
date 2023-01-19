@@ -324,6 +324,9 @@ if __name__ == "__main__":
     os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
     
     app = QApplication(sys.argv)
+
+    ui_file = Qfile("page1.ui")
+
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
