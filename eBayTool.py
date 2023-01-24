@@ -3,8 +3,9 @@ import sys
 import pandas as pd
 from pandas_datareader.data import get_quote_yahoo
 import PySide6
-from PySide6.QtWidgets import (QApplication, QWidget, QMainWindow, QLabel)
-from page1 import Ui_MainWindow
+from PySide6.QtWidgets import (QApplication, QWidget, QMainWindow, QLabel, QTableWidgetItem)
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QObject, QMimeData
+from mainpage import Ui_Form
 
 
 EMS_df = pd.read_csv("csv/EMS_charges.csv", encoding="utf_8", index_col=0)
@@ -24,9 +25,9 @@ class MainWindow(QWidget):
     """ 
 
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.ui = Ui_MainWindow()
+    def __init__(self):
+        QWidget.__init__(self)
+        self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.setWindowTitle("eBay利益計算ツール")
 
@@ -38,7 +39,11 @@ class MainWindow(QWidget):
         #self.label = QLabel("0")
         #self.page1.label11.setText(0)
 
-        # self.page1.graphicsView.clicked.connect(self.usdjpy_rate)
+        # self.ui.graphicsView.clicked.connect(self.usdjpy_rate)
+        EMS_model = PandasModel(EMS_df)
+        ePacket_model = PandasModel(ePacket_df)
+        self.ui.tableView_2.setModel(EMS_model)
+        self.ui.tableView_3.setModel(ePacket_model)
 
     def usdjpy_rate(self):
         """為替レートを取得する。
@@ -310,6 +315,63 @@ class MainWindow(QWidget):
         return self.profit_rate
 
 
+class PandasModel(QAbstractTableModel):
+    """A model to interface a Qt view with pandas dataframe """
+
+    def __init__(self, dataframe: pd.DataFrame, parent=None):
+        QAbstractTableModel.__init__(self, parent)
+        self._dataframe = dataframe
+
+    def rowCount(self, parent=QModelIndex()) -> int:
+        """ Override method from QAbstractTableModel
+
+        Return row count of the pandas DataFrame
+        """
+        if parent == QModelIndex():
+            return len(self._dataframe)
+
+        return 0
+
+    def columnCount(self, parent=QModelIndex()) -> int:
+        """Override method from QAbstractTableModel
+
+        Return column count of the pandas DataFrame
+        """
+        if parent == QModelIndex():
+            return len(self._dataframe.columns)
+        return 0
+
+    def data(self, index: QModelIndex, role=Qt.ItemDataRole):
+        """Override method from QAbstractTableModel
+
+        Return data cell from the pandas DataFrame
+        """
+        if not index.isValid():
+            return None
+
+        if role == Qt.DisplayRole:
+            return str(self._dataframe.iloc[index.row(), index.column()])
+
+        return None
+
+    def headerData(
+        self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole
+    ):
+        """Override method from QAbstractTableModel
+
+        Return dataframe index as vertical header data and columns as horizontal header data.
+        """
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return str(self._dataframe.columns[section])
+
+            if orientation == Qt.Vertical:
+                return str(self._dataframe.index[section])
+
+        return None
+
+
+
 if __name__ == "__main__":
 
     dirname = os.path.dirname(PySide6.__file__)
@@ -317,6 +379,8 @@ if __name__ == "__main__":
     os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
     
     app = QApplication(sys.argv)
+
+
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
