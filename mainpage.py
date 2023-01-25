@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
-    QGraphicsView, QGridLayout, QGroupBox, QHeaderView,
-    QLabel, QLineEdit, QRadioButton, QSizePolicy,
-    QTableView, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
+    QFrame, QGridLayout, QGroupBox, QHeaderView,
+    QLabel, QLineEdit, QPushButton, QRadioButton,
+    QSizePolicy, QTableView, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -40,7 +40,7 @@ class Ui_Form(object):
         self.line.setFrameShadow(QFrame.Sunken)
         self.widget = QWidget(Form)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(10, 20, 121, 571))
+        self.widget.setGeometry(QRect(20, 10, 121, 581))
         sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
@@ -52,7 +52,7 @@ class Ui_Form(object):
         self.groupBox_3.setStyleSheet(u"border: none;")
         self.verticalLayoutWidget_6 = QWidget(self.groupBox_3)
         self.verticalLayoutWidget_6.setObjectName(u"verticalLayoutWidget_6")
-        self.verticalLayoutWidget_6.setGeometry(QRect(10, 360, 101, 70))
+        self.verticalLayoutWidget_6.setGeometry(QRect(20, 420, 101, 70))
         self.verticalLayout_6 = QVBoxLayout(self.verticalLayoutWidget_6)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -74,33 +74,9 @@ class Ui_Form(object):
 
         self.verticalLayout_6.addWidget(self.radioButton_6)
 
-        self.verticalLayoutWidget_7 = QWidget(self.groupBox_3)
-        self.verticalLayoutWidget_7.setObjectName(u"verticalLayoutWidget_7")
-        self.verticalLayoutWidget_7.setGeometry(QRect(10, 440, 101, 80))
-        self.verticalLayout_7 = QVBoxLayout(self.verticalLayoutWidget_7)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.label_24 = QLabel(self.verticalLayoutWidget_7)
-        self.label_24.setObjectName(u"label_24")
-        self.label_24.setStyleSheet(u"color: rgb(255, 255, 255);")
-
-        self.verticalLayout_7.addWidget(self.label_24)
-
-        self.checkBox_5 = QCheckBox(self.verticalLayoutWidget_7)
-        self.checkBox_5.setObjectName(u"checkBox_5")
-        self.checkBox_5.setStyleSheet(u"color: rgb(255, 255, 255);")
-
-        self.verticalLayout_7.addWidget(self.checkBox_5)
-
-        self.checkBox_6 = QCheckBox(self.verticalLayoutWidget_7)
-        self.checkBox_6.setObjectName(u"checkBox_6")
-        self.checkBox_6.setStyleSheet(u"color: rgb(255, 255, 255);")
-
-        self.verticalLayout_7.addWidget(self.checkBox_6)
-
         self.gridLayoutWidget_3 = QWidget(self.groupBox_3)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(10, 90, 170, 251))
+        self.gridLayoutWidget_3.setGeometry(QRect(10, 100, 170, 251))
         self.gridLayout_3 = QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -141,7 +117,7 @@ class Ui_Form(object):
         self.lineEdit_8.setObjectName(u"lineEdit_8")
         sizePolicy1.setHeightForWidth(self.lineEdit_8.sizePolicy().hasHeightForWidth())
         self.lineEdit_8.setSizePolicy(sizePolicy1)
-        self.lineEdit_8.setCursor(QCursor(Qt.ArrowCursor))
+        self.lineEdit_8.setCursor(QCursor(Qt.IBeamCursor))
         self.lineEdit_8.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "height: 20px;")
 
@@ -203,32 +179,108 @@ class Ui_Form(object):
         self.comboBox_3.setObjectName(u"comboBox_3")
         sizePolicy1.setHeightForWidth(self.comboBox_3.sizePolicy().hasHeightForWidth())
         self.comboBox_3.setSizePolicy(sizePolicy1)
-        self.comboBox_3.setStyleSheet(u"color: rgb(147, 163, 255);\n"
+        palette = QPalette()
+        brush = QBrush(QColor(0, 0, 0, 255))
+        brush.setStyle(Qt.SolidPattern)
+        palette.setBrush(QPalette.Active, QPalette.WindowText, brush)
+        brush1 = QBrush(QColor(255, 255, 255, 255))
+        brush1.setStyle(Qt.SolidPattern)
+        palette.setBrush(QPalette.Active, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Active, QPalette.Text, brush)
+        palette.setBrush(QPalette.Active, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Active, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Active, QPalette.Window, brush1)
+        brush2 = QBrush(QColor(0, 0, 0, 128))
+        brush2.setStyle(Qt.SolidPattern)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.Active, QPalette.PlaceholderText, brush2)
+#endif
+        palette.setBrush(QPalette.Inactive, QPalette.WindowText, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Inactive, QPalette.Text, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Inactive, QPalette.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush2)
+#endif
+        palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush)
+        palette.setBrush(QPalette.Disabled, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Disabled, QPalette.Text, brush)
+        palette.setBrush(QPalette.Disabled, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Disabled, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Disabled, QPalette.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush2)
+#endif
+        self.comboBox_3.setPalette(palette)
+        self.comboBox_3.setCursor(QCursor(Qt.PointingHandCursor))
+        self.comboBox_3.setStyleSheet(u"color: rgb(0, 0, 0);\n"
 "background-color: rgb(255, 255, 255);\n"
 "height: 20px;")
+        self.comboBox_3.setMinimumContentsLength(0)
 
         self.gridLayout_3.addWidget(self.comboBox_3, 7, 0, 1, 1)
 
         self.label_32 = QLabel(self.groupBox_3)
         self.label_32.setObjectName(u"label_32")
-        self.label_32.setGeometry(QRect(10, 20, 51, 16))
+        self.label_32.setGeometry(QRect(10, 40, 51, 16))
         self.label_32.setStyleSheet(u"color: rgb(255, 255, 255);")
         self.label_33 = QLabel(self.groupBox_3)
         self.label_33.setObjectName(u"label_33")
-        self.label_33.setGeometry(QRect(20, 40, 91, 21))
+        self.label_33.setGeometry(QRect(20, 60, 91, 21))
         self.label_33.setStyleSheet(u"color: rgb(85, 170, 127);\n"
 "font-weight: bold;\n"
 "font-size: 20px;")
-        self.graphicsView_3 = QGraphicsView(self.groupBox_3)
-        self.graphicsView_3.setObjectName(u"graphicsView_3")
-        self.graphicsView_3.setGeometry(QRect(80, 0, 31, 31))
-        self.widget1 = QWidget(Form)
-        self.widget1.setObjectName(u"widget1")
-        self.widget1.setGeometry(QRect(180, 30, 691, 551))
-        self.verticalLayout_8 = QVBoxLayout(self.widget1)
+        self.label_33.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.pushButton = QPushButton(self.groupBox_3)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setGeometry(QRect(20, 380, 75, 24))
+        font = QFont()
+        font.setPointSize(10)
+        self.pushButton.setFont(font)
+        self.pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.pushButton.setStyleSheet(u"background-color: rgb(85, 170, 127);\n"
+"border-radius: 4px;\n"
+"color: rgb(255, 255, 255);")
+        self.koushin = QLabel(self.groupBox_3)
+        self.koushin.setObjectName(u"koushin")
+        self.koushin.setGeometry(QRect(100, 20, 30, 30))
+        sizePolicy1.setHeightForWidth(self.koushin.sizePolicy().hasHeightForWidth())
+        self.koushin.setSizePolicy(sizePolicy1)
+        self.koushin.setMinimumSize(QSize(30, 30))
+        self.koushin.setMaximumSize(QSize(30, 30))
+        self.verticalLayoutWidget_7 = QWidget(self.widget)
+        self.verticalLayoutWidget_7.setObjectName(u"verticalLayoutWidget_7")
+        self.verticalLayoutWidget_7.setGeometry(QRect(10, 480, 101, 80))
+        self.verticalLayout_7 = QVBoxLayout(self.verticalLayoutWidget_7)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.label_24 = QLabel(self.verticalLayoutWidget_7)
+        self.label_24.setObjectName(u"label_24")
+        self.label_24.setStyleSheet(u"color: rgb(255, 255, 255);")
+
+        self.verticalLayout_7.addWidget(self.label_24)
+
+        self.checkBox_5 = QCheckBox(self.verticalLayoutWidget_7)
+        self.checkBox_5.setObjectName(u"checkBox_5")
+        self.checkBox_5.setStyleSheet(u"color: rgb(255, 255, 255);")
+
+        self.verticalLayout_7.addWidget(self.checkBox_5)
+
+        self.checkBox_6 = QCheckBox(self.verticalLayoutWidget_7)
+        self.checkBox_6.setObjectName(u"checkBox_6")
+        self.checkBox_6.setStyleSheet(u"color: rgb(255, 255, 255);")
+
+        self.verticalLayout_7.addWidget(self.checkBox_6)
+
+        self.layoutWidget = QWidget(Form)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(180, 30, 691, 551))
+        self.verticalLayout_8 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.label_34 = QLabel(self.widget1)
+        self.label_34 = QLabel(self.layoutWidget)
         self.label_34.setObjectName(u"label_34")
         self.label_34.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "font-weight: bold;\n"
@@ -236,13 +288,28 @@ class Ui_Form(object):
 
         self.verticalLayout_8.addWidget(self.label_34)
 
-        self.tableView_2 = QTableView(self.widget1)
+        self.tableView_2 = QTableView(self.layoutWidget)
         self.tableView_2.setObjectName(u"tableView_2")
-        self.tableView_2.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.tableView_2.setFocusPolicy(Qt.NoFocus)
+        self.tableView_2.setContextMenuPolicy(Qt.NoContextMenu)
+        self.tableView_2.setStyleSheet(u"background-color: rgb(47, 47, 47);\n"
+"color: rgb(255, 255, 255);\n"
+"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.33 rgba(0, 0, 0, 255), stop:0.34 rgba(255, 30, 30, 255), stop:0.66 rgba(255, 0, 0, 255), stop:0.67 rgba(255, 255, 0, 255), stop:1 rgba(255, 255, 0, 255));")
+        self.tableView_2.setFrameShadow(QFrame.Plain)
+        self.tableView_2.setAutoScroll(True)
+        self.tableView_2.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.tableView_2.setTabKeyNavigation(False)
+        self.tableView_2.setProperty("showDropIndicator", False)
+        self.tableView_2.setDragDropOverwriteMode(False)
+        self.tableView_2.horizontalHeader().setVisible(True)
+        self.tableView_2.horizontalHeader().setCascadingSectionResizes(False)
+        self.tableView_2.horizontalHeader().setHighlightSections(False)
+        self.tableView_2.verticalHeader().setVisible(True)
+        self.tableView_2.verticalHeader().setHighlightSections(False)
 
         self.verticalLayout_8.addWidget(self.tableView_2)
 
-        self.label_35 = QLabel(self.widget1)
+        self.label_35 = QLabel(self.layoutWidget)
         self.label_35.setObjectName(u"label_35")
         self.label_35.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "font-weight: bold;\n"
@@ -250,9 +317,10 @@ class Ui_Form(object):
 
         self.verticalLayout_8.addWidget(self.label_35)
 
-        self.tableView_3 = QTableView(self.widget1)
+        self.tableView_3 = QTableView(self.layoutWidget)
         self.tableView_3.setObjectName(u"tableView_3")
-        self.tableView_3.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.tableView_3.setStyleSheet(u"color: rgb(255, 255, 255);\n"
+"background-color: rgb(47, 47, 47);")
 
         self.verticalLayout_8.addWidget(self.tableView_3)
 
@@ -268,9 +336,6 @@ class Ui_Form(object):
         self.label_23.setText(QCoreApplication.translate("Form", u"\u8868\u793a", None))
         self.radioButton_5.setText(QCoreApplication.translate("Form", u"\u30c7\u30d5\u30a9\u30eb\u30c8", None))
         self.radioButton_6.setText(QCoreApplication.translate("Form", u"\u8a73\u7d30", None))
-        self.label_24.setText(QCoreApplication.translate("Form", u"\u914d\u9001\u65b9\u6cd5", None))
-        self.checkBox_5.setText(QCoreApplication.translate("Form", u"EMS", None))
-        self.checkBox_6.setText(QCoreApplication.translate("Form", u"ePacket", None))
         self.label_25.setText(QCoreApplication.translate("Form", u"$", None))
         self.label_26.setText(QCoreApplication.translate("Form", u"g", None))
         self.label_27.setText(QCoreApplication.translate("Form", u"\u4ed5\u5165\u308c\u5024(\u5186)", None))
@@ -291,8 +356,16 @@ class Ui_Form(object):
         self.comboBox_3.setItemText(10, QCoreApplication.translate("Form", u"\u305d\u306e\u4ed6", None))
 
         self.label_32.setText(QCoreApplication.translate("Form", u"USDJPY", None))
-        self.label_33.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.label_33.setText(QCoreApplication.translate("Form", u"0", None))
+        self.pushButton.setText(QCoreApplication.translate("Form", u"\u8a08\u7b97", None))
+        self.koushin.setText("")
+        self.label_24.setText(QCoreApplication.translate("Form", u"\u914d\u9001\u65b9\u6cd5", None))
+        self.checkBox_5.setText(QCoreApplication.translate("Form", u"EMS", None))
+        self.checkBox_6.setText(QCoreApplication.translate("Form", u"ePacket", None))
         self.label_34.setText(QCoreApplication.translate("Form", u"EMS", None))
+#if QT_CONFIG(tooltip)
+        self.tableView_2.setToolTip(QCoreApplication.translate("Form", u"<html><head/><body><p><br/></p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
         self.label_35.setText(QCoreApplication.translate("Form", u"ePacket", None))
     # retranslateUi
 

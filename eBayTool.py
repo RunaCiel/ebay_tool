@@ -5,6 +5,7 @@ from pandas_datareader.data import get_quote_yahoo
 import PySide6
 from PySide6.QtWidgets import (QApplication, QWidget, QMainWindow, QLabel, QTableWidgetItem)
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QObject, QMimeData
+from PySide6.QtGui import QPicture, QPixmap
 from mainpage import Ui_Form
 
 
@@ -44,6 +45,11 @@ class MainWindow(QWidget):
         ePacket_model = PandasModel(ePacket_df)
         self.ui.tableView_2.setModel(EMS_model)
         self.ui.tableView_3.setModel(ePacket_model)
+
+        # self.koushin_icon = QPixmap("image/icon_koushin.png")
+        # self.ui.koushin.setPixmap(self.koushin_icon)
+
+
 
     def usdjpy_rate(self):
         """為替レートを取得する。
@@ -379,6 +385,9 @@ if __name__ == "__main__":
     os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
     
     app = QApplication(sys.argv)
+
+    
+    
 
 
     window = MainWindow()
