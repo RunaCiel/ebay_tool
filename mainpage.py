@@ -228,7 +228,7 @@ class Ui_Form(object):
         self.label_32.setStyleSheet(u"color: rgb(255, 255, 255);")
         self.label_33 = QLabel(self.groupBox_3)
         self.label_33.setObjectName(u"label_33")
-        self.label_33.setGeometry(QRect(20, 60, 91, 21))
+        self.label_33.setGeometry(QRect(20, 70, 91, 21))
         self.label_33.setStyleSheet(u"color: rgb(85, 170, 127);\n"
 "font-weight: bold;\n"
 "font-size: 20px;")
@@ -243,13 +243,12 @@ class Ui_Form(object):
         self.pushButton.setStyleSheet(u"background-color: rgb(85, 170, 127);\n"
 "border-radius: 4px;\n"
 "color: rgb(255, 255, 255);")
-        self.koushin = QLabel(self.groupBox_3)
-        self.koushin.setObjectName(u"koushin")
-        self.koushin.setGeometry(QRect(100, 20, 30, 30))
-        sizePolicy1.setHeightForWidth(self.koushin.sizePolicy().hasHeightForWidth())
-        self.koushin.setSizePolicy(sizePolicy1)
-        self.koushin.setMinimumSize(QSize(30, 30))
-        self.koushin.setMaximumSize(QSize(30, 30))
+        self.pushButton_2 = QPushButton(self.groupBox_3)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.pushButton_2.setGeometry(QRect(90, 30, 30, 30))
+        self.pushButton_2.setMinimumSize(QSize(30, 30))
+        self.pushButton_2.setMaximumSize(QSize(30, 30))
+        self.pushButton_2.setCursor(QCursor(Qt.PointingHandCursor))
         self.verticalLayoutWidget_7 = QWidget(self.widget)
         self.verticalLayoutWidget_7.setObjectName(u"verticalLayoutWidget_7")
         self.verticalLayoutWidget_7.setGeometry(QRect(10, 480, 101, 80))
@@ -358,7 +357,7 @@ class Ui_Form(object):
         self.label_32.setText(QCoreApplication.translate("Form", u"USDJPY", None))
         self.label_33.setText(QCoreApplication.translate("Form", u"0", None))
         self.pushButton.setText(QCoreApplication.translate("Form", u"\u8a08\u7b97", None))
-        self.koushin.setText("")
+        self.pushButton_2.setText("")
         self.label_24.setText(QCoreApplication.translate("Form", u"\u914d\u9001\u65b9\u6cd5", None))
         self.checkBox_5.setText(QCoreApplication.translate("Form", u"EMS", None))
         self.checkBox_6.setText(QCoreApplication.translate("Form", u"ePacket", None))

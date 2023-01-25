@@ -5,7 +5,7 @@ from pandas_datareader.data import get_quote_yahoo
 import PySide6
 from PySide6.QtWidgets import (QApplication, QWidget, QMainWindow, QLabel, QTableWidgetItem)
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QObject, QMimeData
-from PySide6.QtGui import QPicture, QPixmap
+from PySide6.QtGui import QPicture, QPixmap, QIcon
 from mainpage import Ui_Form
 
 
@@ -46,12 +46,17 @@ class MainWindow(QWidget):
         self.ui.tableView_2.setModel(EMS_model)
         self.ui.tableView_3.setModel(ePacket_model)
 
-        # self.koushin_icon = QPixmap("image/icon_koushin.png")
-        # self.ui.koushin.setPixmap(self.koushin_icon)
+        self.set_icon()
+        self.ui.pushButton_2.clicked.connect(self.usdjpy_rate_button_pressed)
+
+    def set_icon(self):
+
+        self.koushin_icon = QIcon(r"image/icon_koushin.png")
+        self.koushin_icon = self.koushin_icon.pixmap(30, 30)
+        self.ui.pushButton_2.setIcon(self.koushin_icon)
 
 
-
-    def usdjpy_rate(self):
+    def usdjpy_rate_button_pressed(self):
         """為替レートを取得する。
 
 
@@ -65,13 +70,15 @@ class MainWindow(QWidget):
                 140
 
         """
+        
         self.result = get_quote_yahoo('JPY=X')
         self.ary_result = self.result["price"].values
         self.doller_rate = self.ary_result[0]
-        self.page1.label11.setText(self.doller_rate)
-
-        return self.doller_rate
+        self.ui.label_33.setText(str(self.doller_rate))
     
+
+    # def calc_button_pressed(self):
+
 
     def conversion_to_doller(self, jpy):
         """日本円をドルに変換する。
