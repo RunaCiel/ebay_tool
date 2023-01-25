@@ -76,7 +76,7 @@ class Ui_Form(object):
 
         self.gridLayoutWidget_3 = QWidget(self.groupBox_3)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(10, 100, 170, 251))
+        self.gridLayoutWidget_3.setGeometry(QRect(10, 100, 111, 251))
         self.gridLayout_3 = QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -228,7 +228,7 @@ class Ui_Form(object):
         self.label_32.setStyleSheet(u"color: rgb(255, 255, 255);")
         self.label_33 = QLabel(self.groupBox_3)
         self.label_33.setObjectName(u"label_33")
-        self.label_33.setGeometry(QRect(20, 70, 91, 21))
+        self.label_33.setGeometry(QRect(20, 60, 91, 21))
         self.label_33.setStyleSheet(u"color: rgb(85, 170, 127);\n"
 "font-weight: bold;\n"
 "font-size: 20px;")
