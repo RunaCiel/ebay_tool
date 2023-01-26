@@ -74,17 +74,29 @@ class MainWindow(QWidget):
 
         # ePacket_ser = self.shipping_ser_gen(self.weight, ePacket_df)
         EMS_ser = self.profit_calc(self.purchase_price, self.sale_price, self.category, self.weight, EMS_df)
-        EMS_model = PandasModel(EMS_ser)
+        EMS_model = self.dataframe_gen(EMS_ser, EMS_df)
+        EMS_model = PandasModel(EMS_model)
         self.ui.tableView_2.setModel(EMS_model)
+
 
 # 作業中↓
 
-    def dataframe_gen(self, profit_ser):
+    def dataframe_gen(self, profit_ser, shipping_method_df):
 
+        self.profit_Ser = profit_ser
         self.profit_df = pd.DataFrame(profit_ser)
+        self.profit_df.insert(-1, "利益率", self.profit_rate_calc(self.sale_price, self.profit_ser))
         self.profit_df = self.profit_df.rename(columns={self.profit_df.iloc[0]: "利益($)"})
-        self.profit_df["利益率"] = self.profit_rate_calc(profit_ser)
-        self.profit_df[""]
+        self.profit_df.insert(0, "販売価格", self.sale_price)
+
+        self.shipping_series = self.shipping_ser_gen(self, self.weight, shipping_method_df)
+
+        self.profit_df.insert(-1, "送料", self.shipping_series)
+        self.profit_df.insert(-1, "落札手数料", self.auction_fee)
+        self.profit_df.insert(-1, "国際決済手数料", self.international_payment_fee)
+        self.profit_df.insert(-1, "為替手数料", self.exchange_fees)
+
+        return self.profit_df
 
 
     def conversion_to_doller(self, jpy):

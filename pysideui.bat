@@ -10,7 +10,7 @@ for %%A in (%*) do (
         set OutputFile="%%~dA%%~pA%%~nA.py"
         REM %hoge%とすると中身がなくなるので遅延環境変数 !hoge! を使う
         echo Convert to !OutputFile!
-        D:\eBayTool\eBayTool\Scripts\pyside6-uic.exe %%A -o !OutputFile!
+        C:\Users\runa1\Documents\eBayTool\eBayTool\Scripts\pyside6-uic.exe %%A -o !OutputFile!
     )
 )
 pause
