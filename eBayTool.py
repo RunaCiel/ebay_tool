@@ -8,11 +8,6 @@ from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QObject, QMimeD
 from PySide6.QtGui import QPicture, QPixmap, QIcon
 from mainpage import Ui_Form
 
-
-EMS_df = pd.read_csv("csv/EMS_charges.csv", encoding="utf_8", index_col=0)
-ePacket_df = pd.read_csv("csv/ePacket_charges.csv", encoding="utf_8", index_col=0)
-
-
 # PySide6のアプリ本体
 class MainWindow(QWidget):
     """Pyside6のアプリ本体
@@ -32,15 +27,6 @@ class MainWindow(QWidget):
         self.ui.setupUi(self)
         self.setWindowTitle("eBay利益計算ツール")
 
-        self.doller_rate = 140
-        self.sale_price = 0
-        self.purchase_price = 0
-        self.weight = 0
-        self.category = ""
-        #self.label = QLabel("0")
-        #self.page1.label11.setText(0)
-
-        # self.ui.graphicsView.clicked.connect(self.usdjpy_rate)
         EMS_model = PandasModel(EMS_df)
         ePacket_model = PandasModel(ePacket_df)
         self.ui.tableView_2.setModel(EMS_model)
@@ -48,6 +34,7 @@ class MainWindow(QWidget):
 
         self.set_icon()
         self.ui.pushButton_2.clicked.connect(self.usdjpy_rate_button_pressed)
+        self.ui.pushButton.clicked.connect(self.calc_button_pressed)
 
     def set_icon(self):
 
@@ -77,7 +64,27 @@ class MainWindow(QWidget):
         self.ui.label_33.setText(str(self.doller_rate))
     
 
-    # def calc_button_pressed(self):
+    def calc_button_pressed(self):
+
+        self.doller_rate = 140
+        self.sale_price = 60
+        self.purchase_price = 1000
+        self.weight = 500
+        self.category = ""
+
+        # ePacket_ser = self.shipping_ser_gen(self.weight, ePacket_df)
+        EMS_ser = self.profit_calc(self.purchase_price, self.sale_price, self.category, self.weight, EMS_df)
+        EMS_model = PandasModel(EMS_ser)
+        self.ui.tableView_2.setModel(EMS_model)
+
+# 作業中↓
+
+    def dataframe_gen(self, profit_ser):
+
+        self.profit_df = pd.DataFrame(profit_ser)
+        self.profit_df = self.profit_df.rename(columns={self.profit_df.iloc[0]: "利益($)"})
+        self.profit_df["利益率"] = self.profit_rate_calc(profit_ser)
+        self.profit_df[""]
 
 
     def conversion_to_doller(self, jpy):
@@ -391,11 +398,10 @@ if __name__ == "__main__":
     plugin_path = os.path.join(dirname, 'plugins', 'platforms')
     os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
     
-    app = QApplication(sys.argv)
-
+    app = QApplication(sys.argv)  
     
-    
-
+    EMS_df = pd.read_csv("csv/EMS_charges.csv", encoding="utf_8", index_col=0)
+    ePacket_df = pd.read_csv("csv/ePacket_charges.csv", encoding="utf_8", index_col=0)
 
     window = MainWindow()
     window.show()
