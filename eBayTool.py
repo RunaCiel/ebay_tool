@@ -27,14 +27,19 @@ class MainWindow(QWidget):
         self.ui.setupUi(self)
         self.setWindowTitle("eBay利益計算ツール")
 
-        EMS_model = PandasModel(EMS_df)
-        ePacket_model = PandasModel(ePacket_df)
+        self.EMS_df = pd.read_csv("csv/EMS_charges.csv", encoding="utf_8", index_col=0)
+        self.ePacket_df = pd.read_csv("csv/ePacket_charges.csv", encoding="utf_8", index_col=0)
+
+        EMS_model = PandasModel(self.EMS_df)
+        ePacket_model = PandasModel(self.ePacket_df)
         self.ui.tableView_2.setModel(EMS_model)
         self.ui.tableView_3.setModel(ePacket_model)
 
         self.set_icon()
         self.ui.pushButton_2.clicked.connect(self.usdjpy_rate_button_pressed)
         self.ui.pushButton.clicked.connect(self.calc_button_pressed)
+        self.ui.buttonGroup.buttonClicked.connect(self.radiobutton_checked)
+
 
     def set_icon(self):
 
@@ -62,39 +67,89 @@ class MainWindow(QWidget):
         self.ary_result = self.result["price"].values
         self.doller_rate = self.ary_result[0]
         self.ui.label_33.setText(str(self.doller_rate))
-    
+
+
 
     def calc_button_pressed(self):
 
-        self.doller_rate = 140
-        self.sale_price = 60
-        self.purchase_price = 1000
-        self.weight = 500
-        self.category = ""
+        try:
+            self.doller_rate
 
-        # ePacket_ser = self.shipping_ser_gen(self.weight, ePacket_df)
-        EMS_ser = self.profit_calc(self.purchase_price, self.sale_price, self.category, self.weight, EMS_df)
-        EMS_model = self.dataframe_gen(EMS_ser, EMS_df)
-        EMS_model = PandasModel(EMS_model)
-        self.ui.tableView_2.setModel(EMS_model)
+            try:
+                self.sale_price = int(self.ui.lineEdit_8.text())
+            except ValueError:
+                print("販売価格を入力してください")
+
+            try:
+                self.purchase_price = int(self.ui.lineEdit_9.text())
+            except ValueError:
+                self.purchase_price = 0
+
+            try:
+                self.weight = int(self.ui.lineEdit_7.text())
+            except ValueError:
+                self.weight = 0
+
+            self.category = self.ui.comboBox_3.currentText()
+
+            EMS_model = self.dataframe_gen(self.EMS_df)
+            EMS_model = PandasModel(EMS_model)
+            self.ui.tableView_2.setModel(EMS_model)
+            ePacket_model = self.dataframe_gen(self.ePacket_df)
+            ePacket_model = PandasModel(ePacket_model)
+            self.ui.tableView_3.setModel(ePacket_model)
+            
+        except AttributeError:
+            print("為替レートを更新してください")
 
 
-# 作業中↓
+# 作業中-----------------------------------------------------------------------------
 
-    def dataframe_gen(self, profit_ser, shipping_method_df):
 
-        self.profit_Ser = profit_ser
-        self.profit_df = pd.DataFrame(profit_ser)
-        self.profit_df.insert(-1, "利益率", self.profit_rate_calc(self.sale_price, self.profit_ser))
-        self.profit_df = self.profit_df.rename(columns={self.profit_df.iloc[0]: "利益($)"})
-        self.profit_df.insert(0, "販売価格", self.sale_price)
+    def radiobutton_checked(self):
+        self.ui.buttonGroup.setId(self.ui.radioButton_5, 1)
+        self.ui.buttonGroup.setId(self.ui.radioButton_6, 2)
+        # 詳細
+        if self.ui.buttonGroup.checkedId() == 2:
+            self.ui.tableView_2.showColumn(5)
+            self.ui.tableView_2.showColumn(6)
+            self.ui.tableView_2.showColumn(7)
+            self.ui.tableView_2.showColumn(8)
+            self.ui.tableView_3.showColumn(5)
+            self.ui.tableView_3.showColumn(6)
+            self.ui.tableView_3.showColumn(7)
+            self.ui.tableView_3.showColumn(8)
+            
+        # デフォルト
+        elif self.ui.buttonGroup.checkedId() == 1:
+            self.ui.tableView_2.setColumnHidden(5, True)
+            self.ui.tableView_2.setColumnHidden(6, True)
+            self.ui.tableView_2.setColumnHidden(7, True)
+            self.ui.tableView_2.setColumnHidden(8, True)
+            self.ui.tableView_3.setColumnHidden(5, True)
+            self.ui.tableView_3.setColumnHidden(6, True)
+            self.ui.tableView_3.setColumnHidden(7, True)
+            self.ui.tableView_3.setColumnHidden(8, True)
 
-        self.shipping_series = self.shipping_ser_gen(self, self.weight, shipping_method_df)
 
-        self.profit_df.insert(-1, "送料", self.shipping_series)
-        self.profit_df.insert(-1, "落札手数料", self.auction_fee)
-        self.profit_df.insert(-1, "国際決済手数料", self.international_payment_fee)
-        self.profit_df.insert(-1, "為替手数料", self.exchange_fees)
+    def dataframe_gen(self, shipping_method_df):
+
+        self.shipping_method_df = shipping_method_df
+        self.profit_ser = self.profit_calc()
+        self.profit_df = pd.DataFrame(self.profit_ser)
+        self.profit_rate_list = self.profit_rate_calc()
+        self.profit_df["利益率"] = self.profit_rate_list
+        self.profit_df = self.profit_df.rename(columns={self.weight: "利益($)"})
+        self.profit_df["販売価格($)"] = (self.sale_price)
+
+        self.shipping_series = self.shipping_ser_gen()
+
+        self.profit_df["仕入れ値($)"] = self.purchase_price
+        self.profit_df["送料($)"] = self.shipping_series
+        self.profit_df["落札手数料($)"] = self.auction_fee
+        self.profit_df["国際決済手数料($)"] = self.international_payment_fee
+        self.profit_df["梱包費($)"] = self.material_cost
+        self.profit_df["為替手数料($)"] = self.exchange_fees
 
         return self.profit_df
 
@@ -152,7 +207,7 @@ class MainWindow(QWidget):
         return self.jpy
 
 
-    def category_calc(self, category, sale_price):
+    def category_calc(self):
         """商品カテゴリーごとに変わる落札手数料を計算する。
 
 
@@ -178,37 +233,37 @@ class MainWindow(QWidget):
 
         """
 
-        if category == "本と雑誌" or "映画&テレビ" or "音楽":
+        if self.category == "本と雑誌" or "映画&テレビ" or "音楽":
             self.category_fee = 0.146
             self.borderline_of_price = 7500
             self.over_rate = 0.0235
-        elif category == "地金":
+        elif self.category == "地金":
             self.category_fee = 0.129
             self.borderline_of_price = 7500
             self.over_rate = 0.07
-        elif category == "レディースバッグ&ハンドバッグ":
+        elif self.category == "レディースバッグ&ハンドバッグ":
             self.category_fee = 0.15
             self.borderline_of_price = 2000
             self.over_rate = 0.09
-        elif category == "ジュエリー&腕時計":
+        elif self.category == "ジュエリー&腕時計":
             self.category_fee = 0.15
             self.borderline_of_price = 5000
             self.over_rate = 0.09
-        elif category == "腕時計、部品&付属品":
-            if sale_price >= 1000:
+        elif self.category == "腕時計、部品&付属品":
+            if self.sale_price >= 1000:
                 self.category_fee = 0.15
                 self.borderline_of_price = 0
                 self.over_rate = 0
-            elif sale_price >= 7500:
+            elif self.sale_price >= 7500:
                 self.category_fee = 0.065
                 self.borderline_of_price = 7500
                 self.over_rate = 0.03
-        elif category == "ギター&ベース":
+        elif self.category == "ギター&ベース":
             self.category_fee = 0.06
             self.borderline_of_price = 7500
             self.over_rate = 0.0235
-        elif category == "スポーツシューズ":
-            if sale_price >= 150:
+        elif self.category == "スポーツシューズ":
+            if self.sale_price >= 150:
                 self.category_fee = 0.08
                 self.borderline_of_price = 0
                 self.over_rate = 0
@@ -222,15 +277,15 @@ class MainWindow(QWidget):
             self.over_rate = 0.0235
 
 
-        if sale_price >= self.borderline_of_price:
-            self.auction_fee = sale_price*self.category_fee + (self.borderline_of_price - sale_price)*self.over_rate
+        if self.sale_price >= self.borderline_of_price:
+            self.auction_fee = self.sale_price*self.category_fee + (self.borderline_of_price - self.sale_price)*self.over_rate
         else:
-            self.auction_fee = sale_price * self.category_fee
+            self.auction_fee = self.sale_price * self.category_fee
 
         return self.auction_fee
 
 
-    def shipping_ser_gen(self, weight, shipping_method_df):
+    def shipping_ser_gen(self):
         """入力した重量に当てはまる送料の1次元リストを作成。
 
 
@@ -255,23 +310,23 @@ class MainWindow(QWidget):
 
         """
 
-        self.weight_index = shipping_method_df.index
+        self.weight_index = self.shipping_method_df.index
 
         for index in reversed(self.weight_index):
 
-            if weight >= index:
+            if self.weight >= index:
                 self.weight_index = index
                 break
             else:
                 pass
 
-        self.shipping_series = shipping_method_df.loc[self.weight_index] 
+        self.shipping_series = self.shipping_method_df.loc[self.weight_index] 
         self.shipping_series = self.conversion_to_doller(self.shipping_series)
 
         return self.shipping_series
 
 
-    def profit_calc(self, purchase_price, sale_price, category, weight, shipping_method_df):
+    def profit_calc(self):
         """利益($)を計算する。
 
 
@@ -299,24 +354,24 @@ class MainWindow(QWidget):
 
         """
 
-        self.exchange_fees = 0.002 * sale_price
-        self.international_payment_fee = 0.0135 * sale_price
+        self.purchase_price = self.conversion_to_doller(self.purchase_price)
+
+        self.exchange_fees = 0.002 * self.sale_price
+        self.international_payment_fee = 0.0135 * self.sale_price
         self.material_cost = 1.5
+        self.auction_fee = self.category_calc()
 
-        self.purchase_price = self.conversion_to_doller(purchase_price)
-        
-        self.auction_fee = self.category_calc(category, sale_price)
-
-        self.profit = sale_price - self.purchase_price - self.material_cost - self.auction_fee - self.international_payment_fee - self.exchange_fees
+        self.profit = self.sale_price - self.purchase_price - self.material_cost - self.auction_fee - self.international_payment_fee - self.exchange_fees
         self.profit = round(self.profit, 2)
 
-        self.shipping_ser = self.shipping_ser_gen(weight, shipping_method_df)
+        self.shipping_ser = self.shipping_ser_gen()
         self.profit_ser = self.profit - self.shipping_ser
+        self.profit_ser = round(self.profit_ser, 2)
 
         return self.profit_ser
 
 
-    def profit_rate_calc(self, sale_price, profit):
+    def profit_rate_calc(self):
         """利益率を計算する。
 
 
@@ -343,8 +398,14 @@ class MainWindow(QWidget):
 
         """
 
-        self.profit_rate = profit / sale_price * 100
-        return self.profit_rate
+        self.profit_rate = self.profit_ser / self.sale_price * 100
+        self.list = list(self.profit_rate)
+        self.profit_rate_list = []
+        for i in self.list:
+            i = round(i)
+            i = str(i) + "%"
+            self.profit_rate_list.append(i)
+        return self.profit_rate_list
 
 
 class PandasModel(QAbstractTableModel):
@@ -412,9 +473,6 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)  
     
-    EMS_df = pd.read_csv("csv/EMS_charges.csv", encoding="utf_8", index_col=0)
-    ePacket_df = pd.read_csv("csv/ePacket_charges.csv", encoding="utf_8", index_col=0)
-
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

@@ -15,7 +15,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup, QComboBox,
     QFrame, QGridLayout, QGroupBox, QHeaderView,
     QLabel, QLineEdit, QPushButton, QRadioButton,
     QSizePolicy, QTableView, QVBoxLayout, QWidget)
@@ -52,7 +52,7 @@ class Ui_Form(object):
         self.groupBox_3.setStyleSheet(u"border: none;")
         self.verticalLayoutWidget_6 = QWidget(self.groupBox_3)
         self.verticalLayoutWidget_6.setObjectName(u"verticalLayoutWidget_6")
-        self.verticalLayoutWidget_6.setGeometry(QRect(20, 420, 101, 70))
+        self.verticalLayoutWidget_6.setGeometry(QRect(20, 430, 101, 70))
         self.verticalLayout_6 = QVBoxLayout(self.verticalLayoutWidget_6)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -63,12 +63,17 @@ class Ui_Form(object):
         self.verticalLayout_6.addWidget(self.label_23)
 
         self.radioButton_5 = QRadioButton(self.verticalLayoutWidget_6)
+        self.buttonGroup = QButtonGroup(Form)
+        self.buttonGroup.setObjectName(u"buttonGroup")
+        self.buttonGroup.addButton(self.radioButton_5)
         self.radioButton_5.setObjectName(u"radioButton_5")
         self.radioButton_5.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.radioButton_5.setChecked(True)
 
         self.verticalLayout_6.addWidget(self.radioButton_5)
 
         self.radioButton_6 = QRadioButton(self.verticalLayoutWidget_6)
+        self.buttonGroup.addButton(self.radioButton_6)
         self.radioButton_6.setObjectName(u"radioButton_6")
         self.radioButton_6.setStyleSheet(u"color: rgb(255, 255, 255);")
 
@@ -249,30 +254,6 @@ class Ui_Form(object):
         self.pushButton_2.setMinimumSize(QSize(30, 30))
         self.pushButton_2.setMaximumSize(QSize(30, 30))
         self.pushButton_2.setCursor(QCursor(Qt.PointingHandCursor))
-        self.verticalLayoutWidget_7 = QWidget(self.widget)
-        self.verticalLayoutWidget_7.setObjectName(u"verticalLayoutWidget_7")
-        self.verticalLayoutWidget_7.setGeometry(QRect(10, 480, 101, 80))
-        self.verticalLayout_7 = QVBoxLayout(self.verticalLayoutWidget_7)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.label_24 = QLabel(self.verticalLayoutWidget_7)
-        self.label_24.setObjectName(u"label_24")
-        self.label_24.setStyleSheet(u"color: rgb(255, 255, 255);")
-
-        self.verticalLayout_7.addWidget(self.label_24)
-
-        self.checkBox_5 = QCheckBox(self.verticalLayoutWidget_7)
-        self.checkBox_5.setObjectName(u"checkBox_5")
-        self.checkBox_5.setStyleSheet(u"color: rgb(255, 255, 255);")
-
-        self.verticalLayout_7.addWidget(self.checkBox_5)
-
-        self.checkBox_6 = QCheckBox(self.verticalLayoutWidget_7)
-        self.checkBox_6.setObjectName(u"checkBox_6")
-        self.checkBox_6.setStyleSheet(u"color: rgb(255, 255, 255);")
-
-        self.verticalLayout_7.addWidget(self.checkBox_6)
-
         self.layoutWidget = QWidget(Form)
         self.layoutWidget.setObjectName(u"layoutWidget")
         self.layoutWidget.setGeometry(QRect(180, 30, 691, 551))
@@ -300,8 +281,12 @@ class Ui_Form(object):
         self.tableView_2.setTabKeyNavigation(False)
         self.tableView_2.setProperty("showDropIndicator", False)
         self.tableView_2.setDragDropOverwriteMode(False)
+        self.tableView_2.setSelectionMode(QAbstractItemView.NoSelection)
+        self.tableView_2.setTextElideMode(Qt.ElideNone)
+        self.tableView_2.setGridStyle(Qt.SolidLine)
         self.tableView_2.horizontalHeader().setVisible(True)
         self.tableView_2.horizontalHeader().setCascadingSectionResizes(False)
+        self.tableView_2.horizontalHeader().setDefaultSectionSize(70)
         self.tableView_2.horizontalHeader().setHighlightSections(False)
         self.tableView_2.verticalHeader().setVisible(True)
         self.tableView_2.verticalHeader().setHighlightSections(False)
@@ -320,6 +305,13 @@ class Ui_Form(object):
         self.tableView_3.setObjectName(u"tableView_3")
         self.tableView_3.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(47, 47, 47);")
+        self.tableView_3.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.tableView_3.setTabKeyNavigation(False)
+        self.tableView_3.setProperty("showDropIndicator", False)
+        self.tableView_3.setDragDropOverwriteMode(False)
+        self.tableView_3.setSelectionMode(QAbstractItemView.NoSelection)
+        self.tableView_3.setTextElideMode(Qt.ElideNone)
+        self.tableView_3.horizontalHeader().setDefaultSectionSize(70)
 
         self.verticalLayout_8.addWidget(self.tableView_3)
 
@@ -358,9 +350,6 @@ class Ui_Form(object):
         self.label_33.setText(QCoreApplication.translate("Form", u"0", None))
         self.pushButton.setText(QCoreApplication.translate("Form", u"\u8a08\u7b97", None))
         self.pushButton_2.setText("")
-        self.label_24.setText(QCoreApplication.translate("Form", u"\u914d\u9001\u65b9\u6cd5", None))
-        self.checkBox_5.setText(QCoreApplication.translate("Form", u"EMS", None))
-        self.checkBox_6.setText(QCoreApplication.translate("Form", u"ePacket", None))
         self.label_34.setText(QCoreApplication.translate("Form", u"EMS", None))
 #if QT_CONFIG(tooltip)
         self.tableView_2.setToolTip(QCoreApplication.translate("Form", u"<html><head/><body><p><br/></p></body></html>", None))
