@@ -24,8 +24,9 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(900, 600)
-        Form.setMinimumSize(QSize(900, 600))
+        Form.resize(950, 600)
+        Form.setMinimumSize(QSize(950, 600))
+        Form.setBaseSize(QSize(950, 600))
         Form.setStyleSheet(u"background-color: rgb(47, 47, 47);")
         self.line = QFrame(Form)
         self.line.setObjectName(u"line")
@@ -91,6 +92,7 @@ class Ui_Form(object):
         self.lineEdit_7.setSizePolicy(sizePolicy1)
         self.lineEdit_7.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "height: 20px;")
+        self.lineEdit_7.setMaxLength(10)
 
         self.gridLayout_3.addWidget(self.lineEdit_7, 5, 0, 1, 1)
 
@@ -125,6 +127,7 @@ class Ui_Form(object):
         self.lineEdit_8.setCursor(QCursor(Qt.IBeamCursor))
         self.lineEdit_8.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "height: 20px;")
+        self.lineEdit_8.setMaxLength(10)
 
         self.gridLayout_3.addWidget(self.lineEdit_8, 1, 0, 1, 1)
 
@@ -134,6 +137,7 @@ class Ui_Form(object):
         self.lineEdit_9.setSizePolicy(sizePolicy1)
         self.lineEdit_9.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "height: 20px;")
+        self.lineEdit_9.setMaxLength(10)
 
         self.gridLayout_3.addWidget(self.lineEdit_9, 3, 0, 1, 1)
 
@@ -256,7 +260,7 @@ class Ui_Form(object):
         self.pushButton_2.setCursor(QCursor(Qt.PointingHandCursor))
         self.layoutWidget = QWidget(Form)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(180, 30, 691, 551))
+        self.layoutWidget.setGeometry(QRect(180, 40, 731, 551))
         self.verticalLayout_8 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
@@ -270,11 +274,13 @@ class Ui_Form(object):
 
         self.tableView_2 = QTableView(self.layoutWidget)
         self.tableView_2.setObjectName(u"tableView_2")
+        font1 = QFont()
+        font1.setPointSize(11)
+        self.tableView_2.setFont(font1)
         self.tableView_2.setFocusPolicy(Qt.NoFocus)
         self.tableView_2.setContextMenuPolicy(Qt.NoContextMenu)
-        self.tableView_2.setStyleSheet(u"background-color: rgb(47, 47, 47);\n"
-"color: rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.33 rgba(0, 0, 0, 255), stop:0.34 rgba(255, 30, 30, 255), stop:0.66 rgba(255, 0, 0, 255), stop:0.67 rgba(255, 255, 0, 255), stop:1 rgba(255, 255, 0, 255));")
+        self.tableView_2.setStyleSheet(u"color: rgb(0, 0, 0);\n"
+"background-color: rgb(255, 255, 255);")
         self.tableView_2.setFrameShadow(QFrame.Plain)
         self.tableView_2.setAutoScroll(True)
         self.tableView_2.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -286,9 +292,11 @@ class Ui_Form(object):
         self.tableView_2.setGridStyle(Qt.SolidLine)
         self.tableView_2.horizontalHeader().setVisible(True)
         self.tableView_2.horizontalHeader().setCascadingSectionResizes(False)
-        self.tableView_2.horizontalHeader().setDefaultSectionSize(70)
+        self.tableView_2.horizontalHeader().setMinimumSectionSize(80)
+        self.tableView_2.horizontalHeader().setDefaultSectionSize(80)
         self.tableView_2.horizontalHeader().setHighlightSections(False)
         self.tableView_2.verticalHeader().setVisible(True)
+        self.tableView_2.verticalHeader().setMinimumSectionSize(30)
         self.tableView_2.verticalHeader().setHighlightSections(False)
 
         self.verticalLayout_8.addWidget(self.tableView_2)
@@ -303,18 +311,39 @@ class Ui_Form(object):
 
         self.tableView_3 = QTableView(self.layoutWidget)
         self.tableView_3.setObjectName(u"tableView_3")
-        self.tableView_3.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(47, 47, 47);")
+        self.tableView_3.setFont(font1)
+        self.tableView_3.setStyleSheet(u"color: rgb(0, 0, 0);\n"
+"background-color: rgb(255, 255, 255);")
         self.tableView_3.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableView_3.setTabKeyNavigation(False)
         self.tableView_3.setProperty("showDropIndicator", False)
         self.tableView_3.setDragDropOverwriteMode(False)
         self.tableView_3.setSelectionMode(QAbstractItemView.NoSelection)
         self.tableView_3.setTextElideMode(Qt.ElideNone)
-        self.tableView_3.horizontalHeader().setDefaultSectionSize(70)
+        self.tableView_3.horizontalHeader().setMinimumSectionSize(80)
+        self.tableView_3.horizontalHeader().setDefaultSectionSize(80)
+        self.tableView_3.verticalHeader().setMinimumSectionSize(30)
 
         self.verticalLayout_8.addWidget(self.tableView_3)
 
+        self.label = QLabel(Form)
+        self.label.setObjectName(u"label")
+        self.label.setGeometry(QRect(160, 10, 291, 21))
+        font2 = QFont()
+        font2.setPointSize(14)
+        font2.setBold(True)
+        font2.setItalic(False)
+        font2.setUnderline(False)
+        self.label.setFont(font2)
+        self.label.setStyleSheet(u"color: rgb(170, 0, 0);")
+        QWidget.setTabOrder(self.lineEdit_8, self.lineEdit_9)
+        QWidget.setTabOrder(self.lineEdit_9, self.lineEdit_7)
+        QWidget.setTabOrder(self.lineEdit_7, self.comboBox_3)
+        QWidget.setTabOrder(self.comboBox_3, self.pushButton)
+        QWidget.setTabOrder(self.pushButton, self.radioButton_5)
+        QWidget.setTabOrder(self.radioButton_5, self.radioButton_6)
+        QWidget.setTabOrder(self.radioButton_6, self.tableView_3)
+        QWidget.setTabOrder(self.tableView_3, self.pushButton_2)
 
         self.retranslateUi(Form)
 
@@ -355,5 +384,6 @@ class Ui_Form(object):
         self.tableView_2.setToolTip(QCoreApplication.translate("Form", u"<html><head/><body><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.label_35.setText(QCoreApplication.translate("Form", u"ePacket", None))
+        self.label.setText("")
     # retranslateUi
 

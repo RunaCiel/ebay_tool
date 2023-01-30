@@ -3,19 +3,14 @@ import sys
 import pandas as pd
 from pandas_datareader.data import get_quote_yahoo
 import PySide6
-from PySide6.QtWidgets import (QApplication, QWidget, QMainWindow, QLabel, QTableWidgetItem)
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QObject, QMimeData
-from PySide6.QtGui import QPicture, QPixmap, QIcon
+from PySide6.QtWidgets import (QApplication, QWidget, QItemDelegate)
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
+from PySide6.QtGui import QIcon, QColor
 from mainpage import Ui_Form
 
 # PySide6のアプリ本体
 class MainWindow(QWidget):
     """Pyside6のアプリ本体
-    
-
-        Attributes:
-            
-
 
 
     """ 
@@ -35,31 +30,33 @@ class MainWindow(QWidget):
         self.ui.tableView_2.setModel(EMS_model)
         self.ui.tableView_3.setModel(ePacket_model)
 
-        self.set_icon()
-        self.ui.pushButton_2.clicked.connect(self.usdjpy_rate_button_pressed)
-        self.ui.pushButton.clicked.connect(self.calc_button_pressed)
-        self.ui.buttonGroup.buttonClicked.connect(self.radiobutton_checked)
+        self.set_picture()
+        self.set_connect()
 
 
-    def set_icon(self):
+    def set_picture(self):
+        """画像をセットする。
+        
+        """
 
         self.koushin_icon = QIcon(r"image/icon_koushin.png")
         self.koushin_icon = self.koushin_icon.pixmap(30, 30)
         self.ui.pushButton_2.setIcon(self.koushin_icon)
 
 
+    def set_connect(self):
+        """シグナルとスロットの紐づけ。
+        
+        """
+
+        self.ui.pushButton_2.clicked.connect(self.usdjpy_rate_button_pressed)
+        self.ui.pushButton.clicked.connect(self.calc_button_pressed)
+        self.ui.buttonGroup.buttonClicked.connect(self.radiobutton_checked)
+
+
     def usdjpy_rate_button_pressed(self):
         """為替レートを取得する。
 
-
-        Returns:
-            numpy.float64 : ドル円の為替レート
-
-
-        Examples:
-
-            >>> usdjpy()
-                140
 
         """
         
@@ -69,44 +66,59 @@ class MainWindow(QWidget):
         self.ui.label_33.setText(str(self.doller_rate))
 
 
-
     def calc_button_pressed(self):
+        """「計算」ボタンを押したときの処理。
+        
+
+        Note:
+            purshase_price : 仕入れ値(円)
+            sale_price : 販売価格($)
+            category : カテゴリー
+            weight : ユーザー入力の重量(g)
+
+        """
 
         try:
             self.doller_rate
+            
+        except AttributeError:
+            self.ui.label.setText("為替レートを更新してください")
 
+        else:
+            self.ui.label.setText("")
             try:
                 self.sale_price = int(self.ui.lineEdit_8.text())
             except ValueError:
-                print("販売価格を入力してください")
+                self.ui.label.setText("販売価格を入力してください")
+            else:
+                self.ui.label.setText("")
 
-            try:
-                self.purchase_price = int(self.ui.lineEdit_9.text())
-            except ValueError:
-                self.purchase_price = 0
+                try:
+                    self.purchase_price = int(self.ui.lineEdit_9.text())
+                except ValueError:
+                    self.purchase_price = 0
 
-            try:
-                self.weight = int(self.ui.lineEdit_7.text())
-            except ValueError:
-                self.weight = 0
+                try:
+                    self.weight = int(self.ui.lineEdit_7.text())
+                except ValueError:
+                    self.weight = 500
 
-            self.category = self.ui.comboBox_3.currentText()
+                self.category = self.ui.comboBox_3.currentText()
 
-            EMS_model = self.dataframe_gen(self.EMS_df)
-            EMS_model = PandasModel(EMS_model)
-            self.ui.tableView_2.setModel(EMS_model)
-            ePacket_model = self.dataframe_gen(self.ePacket_df)
-            ePacket_model = PandasModel(ePacket_model)
-            self.ui.tableView_3.setModel(ePacket_model)
-            
-        except AttributeError:
-            print("為替レートを更新してください")
-
-
-# 作業中-----------------------------------------------------------------------------
+                EMS_model = self.dataframe_gen(self.EMS_df)
+                EMS_model = PandasModel(EMS_model)
+                self.ui.tableView_2.setModel(EMS_model)
+                ePacket_model = self.dataframe_gen(self.ePacket_df)
+                ePacket_model = PandasModel(ePacket_model)
+                self.ui.tableView_3.setModel(ePacket_model)
+                self.radiobutton_checked()
 
 
     def radiobutton_checked(self):
+        """「表示」ラジオボタンの処理。
+        
+        """
+
         self.ui.buttonGroup.setId(self.ui.radioButton_5, 1)
         self.ui.buttonGroup.setId(self.ui.radioButton_6, 2)
         # 詳細
@@ -133,14 +145,27 @@ class MainWindow(QWidget):
 
 
     def dataframe_gen(self, shipping_method_df):
+        """TableViewに表示させるデータフレームの作成。
+        
+
+        Args:
+            shipping_method_df(DataFrame) : 送料表
+        
+
+        Returns:
+            DataFrame : 円から変換したドルの値
+
+
+        """
 
         self.shipping_method_df = shipping_method_df
+        self.category_calc()
         self.profit_ser = self.profit_calc()
         self.profit_df = pd.DataFrame(self.profit_ser)
         self.profit_rate_list = self.profit_rate_calc()
         self.profit_df["利益率"] = self.profit_rate_list
         self.profit_df = self.profit_df.rename(columns={self.weight: "利益($)"})
-        self.profit_df["販売価格($)"] = (self.sale_price)
+        self.profit_df["販売価格($)"] = self.sale_price
 
         self.shipping_series = self.shipping_ser_gen()
 
@@ -211,11 +236,6 @@ class MainWindow(QWidget):
         """商品カテゴリーごとに変わる落札手数料を計算する。
 
 
-        Args:
-            category (str) : 該当するカテゴリー
-            sale_price (int) : 商品の販売価格($)
-
-
         Returns:
             int : 販売価格に対する落札手数料($)
 
@@ -233,7 +253,7 @@ class MainWindow(QWidget):
 
         """
 
-        if self.category == "本と雑誌" or "映画&テレビ" or "音楽":
+        if self.category == "本と雑誌" or self.category == "映画&テレビ" or self.category == "音楽":
             self.category_fee = 0.146
             self.borderline_of_price = 7500
             self.over_rate = 0.0235
@@ -288,11 +308,6 @@ class MainWindow(QWidget):
     def shipping_ser_gen(self):
         """入力した重量に当てはまる送料の1次元リストを作成。
 
-
-        Args:
-            weight (int) : ユーザー入力の重量(g)
-            shipping_method_df (dataframe) : csvをデータフレームで取り込んだ送料表(円)
-
         
         Returns:
             series : 送料表から重量に当てはまる送料行を抜き出した1次元リスト
@@ -330,26 +345,8 @@ class MainWindow(QWidget):
         """利益($)を計算する。
 
 
-        Args:
-            purshase_price(int) : 仕入れ値(円)
-            sale_price(int) : 販売価格($)
-            category(str) : カテゴリー
-            weight(int) : ユーザー入力の重量(g)
-            shipping_method_df(dataframe) : csvをデータフレームで取り込んだ送料表(円)
-
-
         Returns:
-            series : 利益の一次元リスト($)
-
-
-        Examles:
-
-            >>> profit_calc(1000, 50, "本と雑誌", 500, EMS_df)
-                第1地帯    22.92
-                第2地帯    19.71
-                第3地帯    10.78
-                第4地帯     5.42
-                第5地帯     7.57
+            series : 地域ごとの利益の一次元リスト($)
 
 
         """
@@ -359,7 +356,6 @@ class MainWindow(QWidget):
         self.exchange_fees = 0.002 * self.sale_price
         self.international_payment_fee = 0.0135 * self.sale_price
         self.material_cost = 1.5
-        self.auction_fee = self.category_calc()
 
         self.profit = self.sale_price - self.purchase_price - self.material_cost - self.auction_fee - self.international_payment_fee - self.exchange_fees
         self.profit = round(self.profit, 2)
@@ -375,26 +371,9 @@ class MainWindow(QWidget):
         """利益率を計算する。
 
 
-        Args:
-            sale_price(int) : 販売価格($)
-            profit(ser) : 利益値($)
-
-
         Returns:
-            series : 利益率を計算する(%)
+            series : 地域ごとの利益率(%)の一次元リスト
 
-
-        Examples:
-
-            >>> profit = profit_calc(1000, 50, "本と雑誌", 500, EMS_df)
-                profit_rate_calc(50, profit)
-
-                第1地帯    45.84
-                第2地帯    39.42
-                第3地帯    21.56
-                第4地帯    10.84
-                第5地帯    15.14
-        
 
         """
 

@@ -6,13 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
+    <width>950</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
+    <width>950</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>950</width>
     <height>600</height>
    </size>
   </property>
@@ -150,6 +156,9 @@
          <string notr="true">background-color: rgb(255, 255, 255);
 height: 20px;</string>
         </property>
+        <property name="maxLength">
+         <number>10</number>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -215,6 +224,9 @@ height: 20px;</string>
          <string notr="true">background-color: rgb(255, 255, 255);
 height: 20px;</string>
         </property>
+        <property name="maxLength">
+         <number>10</number>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
@@ -228,6 +240,9 @@ height: 20px;</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(255, 255, 255);
 height: 20px;</string>
+        </property>
+        <property name="maxLength">
+         <number>10</number>
         </property>
        </widget>
       </item>
@@ -669,8 +684,8 @@ color: rgb(255, 255, 255);</string>
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>30</y>
-     <width>691</width>
+     <y>40</y>
+     <width>731</width>
      <height>551</height>
     </rect>
    </property>
@@ -689,6 +704,11 @@ font-size: 18px;</string>
     </item>
     <item>
      <widget class="QTableView" name="tableView_2">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -699,9 +719,8 @@ font-size: 18px;</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(47, 47, 47);
-color: rgb(255, 255, 255);
-selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.33 rgba(0, 0, 0, 255), stop:0.34 rgba(255, 30, 30, 255), stop:0.66 rgba(255, 0, 0, 255), stop:0.67 rgba(255, 255, 0, 255), stop:1 rgba(255, 255, 0, 255));</string>
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Plain</enum>
@@ -736,14 +755,20 @@ selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
       </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>80</number>
+      </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>70</number>
+       <number>80</number>
       </attribute>
       <attribute name="horizontalHeaderHighlightSections">
        <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>30</number>
       </attribute>
       <attribute name="verticalHeaderHighlightSections">
        <bool>false</bool>
@@ -764,9 +789,14 @@ font-size: 18px;</string>
     </item>
     <item>
      <widget class="QTableView" name="tableView_3">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(47, 47, 47);</string>
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
@@ -786,14 +816,55 @@ background-color: rgb(47, 47, 47);</string>
       <property name="textElideMode">
        <enum>Qt::ElideNone</enum>
       </property>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>80</number>
+      </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>70</number>
+       <number>80</number>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>30</number>
       </attribute>
      </widget>
     </item>
    </layout>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>10</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <italic>false</italic>
+     <bold>true</bold>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(170, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_8</tabstop>
+  <tabstop>lineEdit_9</tabstop>
+  <tabstop>lineEdit_7</tabstop>
+  <tabstop>comboBox_3</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>radioButton_5</tabstop>
+  <tabstop>radioButton_6</tabstop>
+  <tabstop>tableView_3</tabstop>
+  <tabstop>pushButton_2</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <buttongroups>
